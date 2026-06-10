@@ -1,0 +1,82 @@
+About the job
+At Flat Rock Technology, we build the future!
+ 
+Whether it’s helping clients grow their teams through staff augmentation, developing software that scales businesses, protecting companies from cyber threats, or managing large operational teams as an extension of each of our wonderful customers, we’re there to empower growth and drive impact.
+ 
+With offices across the Globe: UK, Europe, South America, Sri Lanka, and the US, we’re a fast-growing global tech and staff augmentation organization delivering cutting-edge software development, data services, and business process outsourcing to clients worldwide.
+ 
+We believe in innovation, ownership, and growing & developing our people. Your ideas matter here and your work truly makes a difference. Whether we're engineering powerful software, optimizing operations, or helping customers scale, we move fast, stay curious, and build with purpose.
+ 
+Join a team that’s collaborative, ambitious, and always pushing for better. 
+
+ 
+At Flat Rock, we don’t just follow the future - we create it.
+ 
+
+Main responsibilities:
+
+Design and build agentic AI systems, including autonomous agents, multi-agent orchestration, workflow state machines, and tool-using agents.
+Develop LLM-driven agents capable of reasoning, planning, retrieval (RAG), and task execution across enterprise systems.
+Build and maintain AI-powered automation workflows using platforms like n8n and Make to orchestrate business processes and cross-application integrations.
+Integrate agents with APIs, CRM/ERP systems, collaboration tools, databases, and payment platforms using tool/function calling, MCP, and A2A patterns.
+Implement robust execution logic (validation, retries, rate limits, fallbacks, error handling) to ensure reliability and scalability.
+Design and manage RAG pipelines using embeddings, vector databases, chunking, and reranking strategies.
+Establish safety guardrails, access controls, and human-in-the-loop workflows for high-risk actions.
+Build evaluation, observability, and tracing pipelines to monitor performance, cost, latency, and reliability.
+Deploy and operate agent services in cloud environments (AWS, Azure, or GCP) using Docker, Kubernetes, Terraform, and CI/CD.
+Monitor production systems, troubleshoot issues, and continuously improve agent performance and policies.
+Prototype and benchmark emerging agentic AI frameworks and models.
+Create technical documentation and communicate AI solutions effectively to cross-functional stakeholders.
+ 
+
+Requirements:
+
+Bachelor’s or Master’s degree in Computer Science, AI, Engineering, or related field.
+3+ years of software engineering experience (Python and/or TypeScript).
+1+ year building LLM-powered or agentic AI systems in production or near-production environments.
+Experience with agent frameworks (e.g., LangChain, LangGraph, AutoGen, CrewAI, Semantic Kernel).
+Hands-on experience with automation/orchestration tools (e.g., n8n, Make) in production settings.
+Strong understanding of LLMs, embeddings, prompt engineering, structured outputs, and tool calling.
+Experience designing REST APIs, microservices, and backend systems.
+Familiarity with vector databases and RAG architectures.
+Strong system design, debugging, and communication skills.
+
+
+ Preferred
+ 
+Experience with MCP, A2A, or advanced agent communication patterns.
+Advanced experience with n8n (custom nodes, self-hosting) or Make (complex scenarios).
+Experience combining LLMs with workflow engines for document processing, reporting, chatbots, or decision support.
+Familiarity with AI evaluation and observability tools (e.g., LangSmith, OpenAI Evals, Weights & Biases).
+Experience with multi-agent systems, planning algorithms, RL, fine-tuning, or RLHF.
+Knowledge of CI/CD pipelines and security best practices.
+Experience in regulated industries (e.g., healthcare, finance, defense).
+Relevant cloud or ML certifications.
+Experience with cloud platforms (AWS, Azure, or GCP), containerization (Docker, Kubernetes), and infrastructure-as-code tools.
+
+
+What we offer in return:
+
+Competitive salary packages plus a range of region-specific benefits
+Clear career paths and opportunities for continuous professional development
+Exciting, meaningful work within a fast-growing international organisation
+Modern office spaces across the globe
+A vibrant company culture with regular team events and social activities
+Entertainment zones, team-building programmes, and local cultural celebrations
+Hybrid working options – enjoy the flexibility of working from home and the office
+Additional holiday days added the longer you’re with Flat Rock
+ 
+
+Privacy statement
+
+ 
+
+If that sounds just like you, apply now by sending your CV in English!
+ 
+By submitting your application, you agree that FRT will use your personal data for recruitment purposes only. All documents will be treated in the strictest confidentiality.
+
+ 
+Only short-listed candidates will be invited for an interview.
+
+ 
+ We can’t wait to meet you!
