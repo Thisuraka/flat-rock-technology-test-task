@@ -1,0 +1,16 @@
+Feature,Priority,Description,Complexity,Status
+Multi-vendor seller onboarding,Must Have,Sellers register and create storefronts with product listings,High,Not Started
+Product search and filtering,Must Have,"Search by category, price range, material, artisan location",Medium,Not Started
+Shopping cart and checkout,Must Have,Multi-vendor cart with consolidated checkout,High,Not Started
+Payment processing,Must Have,"Stripe Connect for split payments to sellers, support for USD/EUR/GBP",High,Not Started
+Seller analytics dashboard,Should Have,"Sales reports, traffic analytics, conversion rates per product",Medium,Not Started
+AI product recommendations,Should Have,Personalized recommendations based on browsing and purchase history,High,Not Started
+Order tracking,Must Have,Real-time order status with shipping integration,Medium,Not Started
+Customer reviews and ratings,Should Have,Verified purchase reviews with photo uploads,Low,Not Started
+Admin moderation panel,Must Have,"Approve/reject sellers, manage disputes, view platform analytics",Medium,Not Started
+Multi-currency support,Could Have,"Display prices in buyer's local currency, convert at checkout",Medium,Not Started
+Loyalty program,Could Have,"Points system, VIP tiers, exclusive early access for top buyers",Medium,Not Started
+Social sharing,Could Have,Share products to Instagram and Pinterest with deep links,Low,Not Started
+Seller messaging,Should Have,In-app messaging between buyers and sellers,Medium,Not Started
+Inventory management,Must Have,Stock tracking with low-stock alerts for sellers,Medium,Not Started
+SEO optimization,Should Have,"Dynamic meta tags, sitemap, structured data for Google Shopping",Medium,Not Started

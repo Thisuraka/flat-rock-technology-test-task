@@ -1,0 +1,13 @@
+Subject: Tech Requirements for Marketplace Platform
+
+Hello,
+
+We're building a luxury goods marketplace and have put together our initial requirements in the attached spreadsheet. It's still a rough draft — some items might change after our internal review next week.
+
+We haven't finalized a budget yet but we're thinking somewhere in the $80-120K range. Not sure if that's realistic — would appreciate your honest feedback.
+
+Also, we're debating between building a mobile app vs just making the website mobile-responsive. What would you recommend?
+
+Thanks,
+Amara Okafor
+Founder, LuxeMarket
