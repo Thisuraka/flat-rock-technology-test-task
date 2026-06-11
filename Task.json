@@ -45,8 +45,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        336,
-        256
+        1216,
+        32
       ]
     },
     {
@@ -63,8 +63,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        512,
-        256
+        1392,
+        32
       ],
       "webhookId": "d527b9eb-b474-42c6-897a-de41323f03e5",
       "credentials": {
@@ -248,8 +248,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -1984,
-        -128
+        -2048,
+        -288
       ]
     },
     {
@@ -312,7 +312,7 @@
       "typeVersion": 3.4,
       "position": [
         -2256,
-        -16
+        -96
       ],
       "id": "fe6bd32d-ba24-4d01-81c9-05870c8c547f",
       "name": "Switch"
@@ -330,8 +330,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -944,
-        288
+        -128,
+        -144
       ]
     },
     {
@@ -353,8 +353,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
       "typeVersion": 1,
       "position": [
-        -928,
-        752
+        0,
+        64
       ],
       "credentials": {
         "qdrantApi": {
@@ -373,8 +373,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1,
       "position": [
-        -928,
-        944
+        16,
+        496
       ],
       "credentials": {
         "openAiApi": {
@@ -410,13 +410,13 @@
       "type": "@n8n/n8n-nodes-langchain.guardrails",
       "typeVersion": 1,
       "position": [
-        -1328,
-        304
+        -528,
+        80
       ]
     },
     {
       "parameters": {
-        "text": "={{ $json.output }}",
+        "text": "={{ $json.output.draft_reply }}",
         "guardrails": {
           "nsfw": {
             "value": {
@@ -430,8 +430,8 @@
       "type": "@n8n/n8n-nodes-langchain.guardrails",
       "typeVersion": 1,
       "position": [
-        -608,
-        288
+        320,
+        64
       ]
     },
     {
@@ -451,8 +451,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1504,
-        -16
+        -1664,
+        -80
       ],
       "id": "c272c477-5882-41e3-9d0b-b1448b88290e",
       "name": "Merge Attachment Texts"
@@ -479,8 +479,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.2,
       "position": [
-        -80,
-        272
+        832,
+        48
       ],
       "webhookId": "wf6-approval-webhook",
       "credentials": {
@@ -517,8 +517,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        96,
-        272
+        1008,
+        48
       ],
       "id": "db7cd4b4-9029-4882-b83a-03a97fc9077c",
       "name": "Approved?"
@@ -540,8 +540,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.2,
       "position": [
-        -272,
-        272
+        656,
+        48
       ],
       "webhookId": "wf6-approval-webhook",
       "credentials": {
@@ -575,7 +575,7 @@
       "typeVersion": 3.4,
       "position": [
         -2464,
-        -16
+        -96
       ],
       "id": "a54b3111-25e5-4eeb-aafd-b7aca668853e",
       "name": "Edit Fields"
@@ -590,8 +590,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -1984,
-        80
+        -2048,
+        -80
       ]
     },
     {
@@ -601,8 +601,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1760,
-        80
+        -1872,
+        -80
       ],
       "id": "102eefa5-6e87-4a51-83ca-4beeb785ef66",
       "name": "Code in JavaScript"
@@ -619,8 +619,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        -2544,
-        1184
+        -2880,
+        880
       ],
       "credentials": {
         "openAiApi": {
@@ -641,8 +641,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        -944,
-        480
+        -128,
+        64
       ],
       "credentials": {
         "openAiApi": {
@@ -650,6 +650,380 @@
           "name": "OpenAi account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1EnaWhd84VUWwGVhjmGYA1PV7MSlrQz3JftjzkNny0ts",
+          "mode": "list",
+          "cachedResultName": "FlatRockTest Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EnaWhd84VUWwGVhjmGYA1PV7MSlrQz3JftjzkNny0ts/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 632835470,
+          "mode": "list",
+          "cachedResultName": "Non-Inquiry",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EnaWhd84VUWwGVhjmGYA1PV7MSlrQz3JftjzkNny0ts/edit#gid=632835470"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "35e81f76-99a9-4dff-928f-afb0e0cf3c95",
+      "name": "Log Non-Inquiry",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -2448,
+        416
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tN4a9rWvz0TexrKk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0B9E035J83"
+        },
+        "text": "=🔄 Follow-up Email Received\n\nFrom: {{ $('Gmail Trigger').item.json.text }}\nSubject: {{ $('Gmail Trigger').item.json.subject }}\n\nThis is a reply to an existing conversation. Please check your inbox.",
+        "otherOptions": {}
+      },
+      "id": "16632221-5a20-49a6-bad9-b6a8ba19d8b8",
+      "name": "Slack: Follow-up Alert2",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -2656,
+        256
+      ],
+      "webhookId": "bf34b702-467e-49de-8d46-4d8df6418a87",
+      "credentials": {
+        "slackApi": {
+          "id": "Z2DYrW1q0cWw7Z67",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=Subject: {{ $('Gmail Trigger').item.json.subject }}\nFrom: {{ $('Gmail Trigger').item.json.from.text }}\nBody: {{ $('Gmail Trigger').item.json.text }}\nAttachment: {{ $('Merge Attachment Texts').item.json.attachment_text }}\n\n",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "sender_name",
+              "description": "Full name of the sender from the From header",
+              "required": true
+            },
+            {
+              "name": "sender_email",
+              "description": "Email address of the sender",
+              "required": true
+            },
+            {
+              "name": "company_name",
+              "description": "Company or organization name if mentioned"
+            },
+            {
+              "name": "industry",
+              "description": "Best guess industry: fintech, healthcare, e-commerce, logistics, edtech, proptech, saas, enterprise, or other",
+              "required": true
+            },
+            {
+              "name": "project_type",
+              "description": "Brief description of what they want built",
+              "required": true
+            },
+            {
+              "name": "requirements",
+              "description": "Comma-separated list of specific features or capabilities requested"
+            },
+            {
+              "name": "technologies_mentioned",
+              "description": "Comma-separated tech stack preferences mentioned by sender"
+            },
+            {
+              "name": "confidence",
+              "type": "number",
+              "description": "Float between 0.0 and 1.0 indicating how complete and clear the extracted data is. Lower if key fields are ambiguous, missing, or contradictory",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dfda5b7c-e8c7-485c-aa74-94ec4ee6861b",
+      "name": "Extract Inquiry Data",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        -1472,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1EnaWhd84VUWwGVhjmGYA1PV7MSlrQz3JftjzkNny0ts",
+          "mode": "list",
+          "cachedResultName": "FlatRockTest Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EnaWhd84VUWwGVhjmGYA1PV7MSlrQz3JftjzkNny0ts/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EnaWhd84VUWwGVhjmGYA1PV7MSlrQz3JftjzkNny0ts/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sender_name": "={{ $json.output.sender_name }}",
+            "sender_email": "={{ $json.output.sender_email }}",
+            "industry": "={{ $json.output.industry }}",
+            "company_name": "={{ $json.output.company_name }}",
+            "requirements": "={{ $json.output.requirements }}",
+            "project_type": "={{ $json.output.project_type }}",
+            "confidence": "={{ $json.output.confidence }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "sender_name",
+              "displayName": "sender_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sender_email",
+              "displayName": "sender_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company_name",
+              "displayName": "company_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "industry",
+              "displayName": "industry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "project_type",
+              "displayName": "project_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requirements",
+              "displayName": "requirements",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ea1c2d91-08ce-4dd8-b79f-bec4b3961f3c",
+      "name": "Log to Pipeline Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1152,
+        96
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tN4a9rWvz0TexrKk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "confidence-check-001",
+              "leftValue": "={{ $('Extract Inquiry Data').item.json.output.confidence }}",
+              "rightValue": 0.7,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "31360e19-7107-445e-8b0a-d0773f3619b3",
+      "name": "IF: High Confidence",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -944,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0B9E035J83"
+        },
+        "text": "=⚠️ Low-Confidence Inquiry — Needs Manual Review\n\nFrom: {{ $('Extract Inquiry Data').item.json.output.sender_name }} ({{ $('Extract Inquiry Data').item.json.output.sender_email }})\nSubject: {{ $('Gmail Trigger').item.json.subject }}\nConfidence: {{ $('Extract Inquiry Data').item.json.output.confidence }}\n\nThe AI could not confidently extract all details from this inquiry. Please review the original email and respond manually.",
+        "otherOptions": {}
+      },
+      "id": "ad4b827c-270a-462b-8a79-b781ac6090fb",
+      "name": "Slack: Flag Low Confidence",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -752,
+        176
+      ],
+      "webhookId": "b89bfd80-50c9-49f8-93fb-feb460db3d97",
+      "credentials": {
+        "slackApi": {
+          "id": "Z2DYrW1q0cWw7Z67",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0B9E035J83"
+        },
+        "text": "=🚨 Safety Guardrail Triggered\n\nFrom: {{ $('Gmail Trigger').item.json.from.text }}\nSubject: {{ $('Gmail Trigger').item.json.subject }}\n\nThis email was blocked by safety guardrails. Please review the original email manually.\n",
+        "otherOptions": {}
+      },
+      "id": "9e551366-f00c-485f-a4c9-147b4ede3837",
+      "name": "Slack: Guardrail Block",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        336
+      ],
+      "webhookId": "e83930f4-012b-48a0-9da7-17968fce7f26",
+      "credentials": {
+        "slackApi": {
+          "id": "Z2DYrW1q0cWw7Z67",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0B9E035J83"
+        },
+        "text": "=❌ Draft Reply Rejected\n\nSubject: {{ $('Gmail Trigger').item.json.subject }}\nFrom: {{ $('Gmail Trigger').item.json.from.text }}\n\nThe AI-drafted reply was rejected. Please reply to this email manually from your inbox.",
+        "otherOptions": {}
+      },
+      "id": "3aab94a1-50fc-40b9-b264-044ebd64877b",
+      "name": "Slack: Draft Rejected",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        336
+      ],
+      "webhookId": "fc248288-9714-4976-a16c-31372b7a84e1",
+      "credentials": {
+        "slackApi": {
+          "id": "Z2DYrW1q0cWw7Z67",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"draft_reply\": \"The complete email reply text in plain text, ready to send to the client\",\n  \"case_studies_cited\": \"Comma-separated names of ABC Company case studies referenced in the reply (e.g. TradeNest, MediConnect)\",\n  \"engagement_model\": \"Recommended engagement model: project-based, dedicated-team, or staff-augmentation\",\n  \"budget_assessment\": \"Budget fit assessment: within-range, tight, over-budget, or not-specified\",\n  \"key_requirements_addressed\": \"Comma-separated list of the main client requirements addressed in the reply\"\n}",
+        "options": {}
+      },
+      "id": "f1a00001-0010-4000-a000-000000000010",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -128,
+        64
+      ]
     }
   ],
   "pinData": {
@@ -814,7 +1188,7 @@
         ],
         [
           {
-            "node": "Guardrails: Pre RAG",
+            "node": "Extract Inquiry Data",
             "type": "main",
             "index": 0
           }
@@ -892,14 +1266,20 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Slack: Guardrail Block",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Merge Attachment Texts": {
       "main": [
         [
           {
-            "node": "Guardrails: Pre RAG",
+            "node": "Extract Inquiry Data",
             "type": "main",
             "index": 0
           }
@@ -926,7 +1306,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Slack: Guardrail Block",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Approved?": {
@@ -938,7 +1324,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Slack: Draft Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Slack: Send": {
@@ -1002,6 +1394,11 @@
             "node": "Text Classifier",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "Extract Inquiry Data",
+            "type": "ai_languageModel",
+            "index": 0
           }
         ]
       ]
@@ -1016,6 +1413,101 @@
           }
         ]
       ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: follow_up": {
+      "main": [
+        [
+          {
+            "node": "Slack: Follow-up Alert2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack: Follow-up Alert2": {
+      "main": [
+        [
+          {
+            "node": "Log Non-Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: spam": {
+      "main": [
+        [
+          {
+            "node": "Log Non-Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: unrelated": {
+      "main": [
+        [
+          {
+            "node": "Log Non-Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Inquiry Data": {
+      "main": [
+        [
+          {
+            "node": "Log to Pipeline Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to Pipeline Sheet": {
+      "main": [
+        [
+          {
+            "node": "IF: High Confidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: High Confidence": {
+      "main": [
+        [
+          {
+            "node": "Guardrails: Pre RAG",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Slack: Flag Low Confidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -1023,7 +1515,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "f5a7e7ff-01e7-4af6-ba3c-1c28675fc5e1",
+  "versionId": "52c61dfb-5223-48c0-9cc6-17a63faa58ad",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cc8ab8ef167f079a4b5aac88a5ebc7299220f762da84c9209b04000df0f47a9a"
