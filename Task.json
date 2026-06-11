@@ -26,8 +26,8 @@
       "type": "n8n-nodes-base.gmailTrigger",
       "typeVersion": 1.2,
       "position": [
-        -3264,
-        352
+        -3472,
+        368
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -104,31 +104,9 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1,
       "position": [
-        -3056,
-        320
+        -3264,
+        336
       ]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4o-mini",
-        "options": {
-          "temperature": 0
-        }
-      },
-      "id": "ee11572e-9779-42ac-9dbd-8692589e769e",
-      "name": "OpenAI Chat Model",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        -3056,
-        656
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "yKdIsoWDAp0r9m0a",
-          "name": "OpenAi account"
-        }
-      }
     },
     {
       "parameters": {
@@ -150,8 +128,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2672,
-        64
+        -2880,
+        80
       ]
     },
     {
@@ -174,8 +152,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2672,
-        240
+        -2880,
+        256
       ]
     },
     {
@@ -198,8 +176,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2672,
-        416
+        -2880,
+        432
       ]
     },
     {
@@ -222,8 +200,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2672,
-        576
+        -2880,
+        592
       ]
     },
     {
@@ -255,8 +233,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -2448,
-        64
+        -2656,
+        80
       ]
     },
     {
@@ -270,45 +248,9 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -1776,
-        -144
+        -1984,
+        -128
       ]
-    },
-    {
-      "parameters": {
-        "operation": "text",
-        "options": {}
-      },
-      "id": "9f4d59bf-669d-45b8-acdb-ec1c3d94b474",
-      "name": "Extract Text",
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        -1776,
-        64
-      ]
-    },
-    {
-      "parameters": {
-        "model": "gpt-4o-mini",
-        "options": {
-          "temperature": 0.1
-        }
-      },
-      "id": "549b6898-ab58-4c74-86c9-0709b8be0e8b",
-      "name": "OpenAI Chat Model1",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1,
-      "position": [
-        -1248,
-        1024
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "yKdIsoWDAp0r9m0a",
-          "name": "OpenAi account"
-        }
-      }
     },
     {
       "parameters": {
@@ -369,8 +311,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -2048,
-        -32
+        -2256,
+        -16
       ],
       "id": "fe6bd32d-ba24-4d01-81c9-05870c8c547f",
       "name": "Switch"
@@ -378,10 +320,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=User Email Content: {{ $('Edit Fields').item.json.email_body }}\n\nAttachment Content: {{ $('Merge Attachment Texts').item.json.attachment_text }}",
-        "hasOutputParser": true,
+        "text": "=User Email Content: {{ $('Gmail Trigger').item.json.text }}\n\nAttachment Content: {{ $('Merge Attachment Texts').item.json.attachment_text }}",
         "options": {
-          "systemMessage": "You are a professional sales assistant for ABC Company, a full-service technology agency headquartered in Colombo, Sri Lanka with offices in London and Melbourne (60 professionals, ISO 27001 certified, AWS Advanced Consulting Partner).\n\nYour job is to draft email replies to incoming business inquiries using the knowledge base search tool.\n\nKNOWLEDGE BASE CASE STUDIES (these are the ONLY project names you may cite):\n- NovaPay (fintech payment platform)\n- MediConnect (healthcare patient portal — HIPAA compliant, HL7/FHIR, 94% no-show reduction)\n- TradeNest (e-commerce marketplace — 120% GMV growth, Stripe Connect, 78% faster page loads)\n- InsightFlow (SaaS analytics dashboard)\n- SwiftRoute (logistics fleet management — 23% route efficiency, 94% on-time delivery)\n- LearnSpark (edtech learning platform)\n- DwellDesk (proptech property management)\n- GlobalMed Supplies (enterprise CRM integration — SAP)\n\nBEFORE DRAFTING, SEARCH THE KB TOOL:\n1. Search for case studies matching the sender's industry\n2. Search for relevant services and technology capabilities\n3. Search for pricing ranges and engagement models\n4. If specific tech is mentioned (HIPAA, FHIR, Stripe, SAP), search for that term\n5. Even for brief/informal emails, if you can identify the industry, search for and cite the matching case study\n\nDRAFTING RULES:\n1. Cite at least one case study BY ITS EXACT NAME from the list above with a concrete metric from the tool results. Example: \"In our MediConnect project, we achieved a 94% reduction in appointment no-shows.\"\n2. If the email has attachment content, reference specific details from it (budget figures, feature names, requirements, timeline dates).\n2b. If EXTRACTED REQUIREMENTS are provided, you MUST reference at least 3 specific items from them in your reply (e.g., name specific features like telehealth video consultations or secure messaging, cite the exact budget range, acknowledge timeline milestones). This proves you read the attachment — do NOT say we will review the attached document.\n3. Answer EVERY question the sender asked. Do not defer to a call if the KB has the answer.\n4. If a budget is mentioned, compare it to pricing from KB results. Be honest — if the budget is tight for the scope, say so and suggest phasing.\n5. If asked for a technical recommendation, give a clear one based on KB data.\n6. Mention specific technologies ABC Company uses that match the sender's needs.\n7. Be professional, warm, concise. Under 500 words for emails with attachments or RFPs, under 300 words for brief inquiries.\n8. Address the sender by their actual name from the From header. Examples: \"Dear Dr. Roberts,\" or \"Hi Amara,\" or \"Hi Thomas,\"\n9. Sign off EXACTLY as:\n   Best regards,\n   ABC Company Sales Team\n   hello@abccompany.io\n10. If the sender mentions a budget range, you MUST acknowledge it and compare it to ABC Company pricing from KB results. If the budget is tight for the described scope, say so honestly and suggest phasing the work.\n12. If a submission deadline or timeline is mentioned (e.g., RFP Response Due June 30), acknowledge it and confirm you can meet it.\n13. Address the sender by their name as shown in the From line of the email. Do NOT extract names from attachment content.\n11. If the sender asks for a recommendation between technical approaches (e.g., native vs hybrid app, mobile app vs responsive website, monolith vs microservices), give a clear recommendation with reasoning from KB data. Do not defer technical recommendations to a call when you have enough context to advise.\n\nFORMATTING — CRITICAL:\n- Write PLAIN TEXT only. No markdown whatsoever.\n- No ## headers, no **bold**, no *italic*, no []() links, no bullet points with *, no --- dividers.\n- Use line breaks and short paragraphs to structure the email.\n\nHANDLING INCOMPLETE OR BRIEF EMAILS:\n- If the email body is very brief or informal (few sentences, no detailed requirements), do NOT fill in gaps by citing random case studies. However, when the sender's industry IS clearly identifiable (e.g., they mention fleet tracking, patient portal, marketplace) even in a brief email, DO cite the matching case study with one specific metric — it demonstrates relevant domain experience without being gratuitous. A brief, relevant case study reference is valuable; a generic, unrelated one is not.\n- When the email lacks enough context to determine the sender's industry or needs, do NOT cite case studies just to fill space. But when the industry IS clear from keywords (logistics, healthcare, payments, marketplace, etc.), always cite the matching case study. Only omit case studies when the domain is genuinely ambiguous.\n\nHANDLING MISSING ATTACHMENTS:\n- If the email mentions an attachment but the context does not include attachment content (or shows EXTRACTION FAILED), do NOT say \"I couldn't access the attachment\" or anything similar. Instead: acknowledge receipt of the attachment, explain you would like to review it in detail on a call, and ask the sender to confirm a time to discuss.\n\nHANDLING CALL/MEETING REQUESTS:\n- If the sender asks for a call, phone conversation, or meeting, ALWAYS acknowledge that request and propose a next step: \"We would be happy to schedule a call to discuss your project in detail. Please let us know your availability, or reply with a few time slots that work for you.\"\n\nABSOLUTELY FORBIDDEN:\n- NEVER use placeholder text in square brackets: [Name], [Recipient's Name], [Your Full Name], [Your Position], [Your Contact Information], or ANY [text in brackets].\n- NEVER invent or fabricate case study names. Only use the 8 names listed above. If none match, say \"we have delivered similar projects\" without naming one.\n- NEVER reference internal KB document filenames (like abc_03_case_studies.pdf, abc_05_pricing_guide.pdf, etc.) — these are internal files that must never appear in client emails.\n- NEVER include metadata, source references, or links to internal documents.\n- NEVER write a generic reply that could apply to any company. Every reply MUST include specific details from KB tool results."
+          "systemMessage": "You are a professional sales assistant for ABC Company, a full-service technology agency headquartered in Colombo, Sri Lanka with offices in London and Melbourne. You have 60 professionals, are ISO 27001 certified, and are an AWS Advanced Consulting Partner. Your job is to draft email replies to incoming business inquiries using the knowledge base search tool.\n\nHARD RULES — VIOLATIONS OF THESE ARE UNACCEPTABLE:\n- NEVER use placeholder text in square brackets. No [Name], [Sender's Name], [Company], [Your Name], or ANY [text in brackets]. If you do not know someone's name, use a generic greeting like \"Hello\" instead.\n- ALWAYS address the sender by their first name as shown in the From line of the email. Examples: \"Dear Dr. Roberts,\" or \"Hi Amara,\" or \"Hi Thomas,\". Do NOT extract names from attachment content.\n- NEVER invent or fabricate metrics. Only cite numbers that appear in KB tool search results. If a search returns no metric for a case study, do not guess one.\n- NEVER use markdown formatting. No ## headers, no **bold**, no *italic*, no []() links, no bullet points with *, no --- dividers. Write plain text only. Use line breaks and short paragraphs for structure.\n- NEVER reference internal KB document filenames like abc_03_case_studies.pdf or abc_05_pricing_guide.pdf. These are internal files that must never appear in client-facing emails.\n- NEVER invent case study names. You may only cite the 8 projects listed below.\n\nAVAILABLE CASE STUDIES (search the KB tool for details, metrics, and technologies — do not guess metrics):\n- NovaPay — Fintech\n- MediConnect — Healthcare\n- TradeNest — E-Commerce\n- InsightFlow — SaaS Analytics\n- SwiftRoute — Logistics\n- LearnSpark — EdTech\n- DwellDesk — PropTech\n- GlobalMed Supplies — Enterprise / SAP Integration\n\nMANDATORY SEARCH PROCESS — COMPLETE BEFORE DRAFTING:\nYou must perform at least 3 separate KB tool searches before writing any reply.\n\nStep 1: Identify the sender's industry from their email and attachment content (e.g., healthcare, logistics, e-commerce, fintech).\nStep 2: Search using the industry keyword combined with the project type. Example queries: \"healthcare patient portal\", \"logistics fleet management\", \"e-commerce marketplace platform\". Do NOT search generic terms like \"business inquiry\" or \"software project\".\nStep 3: Search for the matching case study by name to get exact metrics. Example: \"MediConnect case study results\" or \"SwiftRoute key results\".\nStep 4: Search for relevant services, pricing, and engagement models. Example: \"mobile app development pricing\" or \"dedicated team engagement model\".\nStep 5: If the sender mentions specific technologies or compliance requirements, search for those. Example: \"HIPAA compliance\" or \"SAP integration\" or \"Stripe Connect\".\n\nDRAFTING RULES:\n1. Open with the sender's name from the From header. Match their tone — formal for formal emails (\"Dear Dr. Roberts,\"), casual for casual ones (\"Hi Thomas,\").\n\n2. In your first paragraph, acknowledge their specific request. Name what they are asking for — do not write a generic \"thank you for reaching out\" without context.\n\n3. Cite at least one case study by its exact name with a concrete metric you found in the KB tool results. Pick the case study that matches the sender's industry. Example: \"In our MediConnect project, we onboarded 3,500 patients within 60 days and achieved a 67% reduction in appointment no-shows through automated reminders.\" If no case study matches the sender's industry, say \"we have delivered similar projects\" without naming one.\n\n4. Reference at least 3 specific items from the attachment content. Name specific features, quote exact budget figures, acknowledge timeline dates or milestones. Example: \"Your RFP lists telehealth video consultations and secure messaging as Must Have requirements — these are capabilities we built into the MediConnect patient portal.\" Do NOT say \"we will review your attachment\" or \"I noticed you mentioned an attachment.\"\n\n5. Answer every question the sender asked. If the KB has the answer, provide it directly. Do not defer questions to a call when you have enough context to respond.\n\n6. If a budget is mentioned, acknowledge the exact figure and compare it to pricing from KB results. If the budget is tight for the described scope, say so honestly and suggest phasing the work into stages.\n\n7. If the sender asks for a technical recommendation (e.g., native vs hybrid app, mobile app vs responsive website), give a clear recommendation with reasoning based on KB data. Do not defer technical recommendations to a call.\n\n8. If a submission deadline or timeline is mentioned (e.g., \"RFP Response Due June 30\"), acknowledge it and confirm you can meet it.\n\n9. If the sender requests a call or meeting, acknowledge that request and propose a next step: \"We would be happy to schedule a call to discuss your project in detail. Please let us know your availability, or reply with a few time slots that work for you.\"\n\n10. For RFPs with multiple requirements listed, address at least 5 specific requirements by name, and mention relevant technologies from the KB that match the sender's tech stack\n\n11. Sign off exactly as:\nBest regards,\nABC Company Sales Team\nhello@abccompany.io\n\nLENGTH AND TONE:\n- Emails with attachments or RFPs: 250 to 500 words. Cover the sender's requirements in detail.\n- Brief inquiries without attachments: 150 to 300 words. Focused but still substantive.\n- A reply under 150 words is almost certainly too generic. Every reply must contain specific details from KB results that prove you understood the sender's needs.\n- Match the sender's formality level. A formal RFP from a CTO gets a formal reply. An informal email gets a warm, conversational reply.\n\nEDGE CASES:\n- Brief or informal emails where the industry IS clear (they mention fleet tracking, patient portal, marketplace, etc.): Cite the matching case study with one specific metric from KB results. Brief does not mean generic.\n- Brief emails where the industry is genuinely ambiguous: Do not cite a case study. Ask clarifying questions about their needs.\n- Missing attachment content (email mentions an attachment but no content is provided): Do NOT say you cannot access the attachment. Acknowledge receipt and propose discussing the details on a call."
         }
       },
       "id": "a4985053-a9f0-4a9f-a2ec-267cc8d8c8b1",
@@ -500,7 +441,7 @@
             {
               "id": "68f1b099-e6c3-4358-82e5-953c12102990",
               "name": "attachment_text",
-              "value": "={{ $('Edit Fields').item.json.mime_type === 'application/pdf'\n    ? $json.text\n    : $json.data\n}}",
+              "value": "={{ Object.values($('Gmail Trigger').item.binary)[0]?.mimeType === 'application/pdf'\n    ? $json.text\n    : $json.features\n}}\n",
               "type": "string"
             }
           ]
@@ -510,7 +451,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1552,
+        -1504,
         -16
       ],
       "id": "c272c477-5882-41e3-9d0b-b1448b88290e",
@@ -591,7 +532,7 @@
           "value": "C0B9E035J83"
         },
         "messageType": "block",
-        "blocksUi": "{\n  \"blocks\": [\n    {\n      \"type\": \"header\",\n      \"text\": {\n        \"type\": \"plain_text\",\n        \"text\": \"New Sales Inquiry: Approval Required\",\n        \"emoji\": true\n      }\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*From:*\\nDr. Amanda Roberts\" },\n        { \"type\": \"mrkdwn\", \"text\": \"*Email:*\\namanda.roberts@healthfirst.com\" }\n      ]\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*Subject:*\\nRFP: Patient Portal Development — HealthFirst Inc.\" },\n        { \"type\": \"mrkdwn\", \"text\": \"*Received:*\\nJun 11, 2026 at 8:17 PM\" }\n      ]\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*Attachments:*\\n📎 healthfirst_rfp.pdf\" }\n      ]\n    },\n    { \"type\": \"divider\" },\n    {\n      \"type\": \"rich_text\",\n      \"elements\": [\n        {\n          \"type\": \"rich_text_section\",\n          \"elements\": [\n            { \"type\": \"emoji\", \"name\": \"incoming_envelope\" },\n            { \"type\": \"text\", \"text\": \"  Original Email\\n\", \"style\": { \"bold\": true } }\n          ]\n        },\n        {\n          \"type\": \"rich_text_quote\",\n          \"elements\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Hi ABC Company,\\n\\nPlease find attached our Request for Proposal for a patient portal development project. We've outlined our requirements, timeline, and budget expectations in the document.\\n\\nWe're particularly interested in your healthcare experience and HIPAA compliance capabilities. Could you review the RFP and let us know if this is something your team can take on?\\n\\nHappy to schedule a discovery call at your convenience.\\n\\nBest regards,\\nDr. Amanda Roberts\\nCTO, HealthFirst Inc.\\namanda.roberts@healthfirst.com\\n+1 (415) 555-0192\"\n            }\n          ]\n        }\n      ]\n    },\n    { \"type\": \"divider\" },\n    {\n      \"type\": \"rich_text\",\n      \"elements\": [\n        {\n          \"type\": \"rich_text_section\",\n          \"elements\": [\n            { \"type\": \"emoji\", \"name\": \"pencil2\" },\n            { \"type\": \"text\", \"text\": \"  Drafted Reply\\n\", \"style\": { \"bold\": true } }\n          ]\n        },\n        {\n          \"type\": \"rich_text_section\",\n          \"elements\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Dear Dr. Roberts,\\n\\nThank you for reaching out to ABC Company regarding the patient portal development project. We're excited to review your RFP and believe our healthcare technology expertise makes us an excellent fit for this initiative.\\n\\nIn our MediConnect project, we achieved a 94% reduction in appointment no-shows through a comprehensive patient portal with HIPAA-compliant architecture, HL7/FHIR integration, and secure messaging capabilities.\\n\\nWe would be happy to schedule a discovery call to discuss your requirements in detail. Please let us know your availability, or reply with a few time slots that work for you.\\n\\nBest regards,\\nABC Company Sales Team\\nhello@abccompany.io\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"type\": \"context\",\n      \"elements\": [\n        { \"type\": \"mrkdwn\", \"text\": \"🤖 Auto-drafted by AI Agent  ·  Awaiting human approval\" }\n      ]\n    }\n  ]\n}",
+        "blocksUi": "={{\nJSON.stringify({\n  \"blocks\": [\n    {\n      \"type\": \"header\",\n      \"text\": {\n        \"type\": \"plain_text\",\n        \"text\": \"📬 New Sales Inquiry: Approval Required\",\n        \"emoji\": true\n      }\n    },\n    {\n      \"type\": \"section\",\n      \"text\": {\n        \"type\": \"mrkdwn\",\n        \"text\": \"*From:*\\n\" + ($('Gmail Trigger').first().json.from?.text || 'Unknown') + \"\\n\\n*Subject:*\\n\" + ($('Gmail Trigger').first().json.subject || '(No Subject)')\n      }\n    },\n    {\n      \"type\": \"divider\"\n    },\n    {\n      \"type\": \"section\",\n      \"text\": {\n        \"type\": \"mrkdwn\",\n        \"text\": \"*📩 Original Email*\\n```\" + ($('Gmail Trigger').first().json.text || '') + \"```\"\n      }\n    },\n    {\n      \"type\": \"divider\"\n    },\n    {\n      \"type\": \"section\",\n      \"text\": {\n        \"type\": \"mrkdwn\",\n        \"text\": \"*✍️ Drafted Reply*\\n```\" + ($json.guardrailsInput || '') + \"```\"\n      }\n    },\n    {\n      \"type\": \"divider\"\n    },\n    {\n      \"type\": \"context\",\n      \"elements\": [\n        {\n          \"type\": \"mrkdwn\",\n          \"text\": \"🤖 Auto-drafted by AI Agent · Awaiting human approval\"\n        }\n      ]\n    }\n  ]\n})\n}}",
         "otherOptions": {}
       },
       "id": "ae034643-da33-4918-a6e8-edc0fde639d8",
@@ -599,7 +540,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.2,
       "position": [
-        -240,
+        -272,
         272
       ],
       "webhookId": "wf6-approval-webhook",
@@ -633,53 +574,124 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2256,
-        -32
+        -2464,
+        -16
       ],
       "id": "a54b3111-25e5-4eeb-aafd-b7aca668853e",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "id": "9f4d59bf-669d-45b8-acdb-ec1c3d94b474",
+      "name": "Extract CSV",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1984,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all();\n\nreturn [\n  {\n    json: {\n      features: JSON.stringify(rows.map(r => r.json), null, 2)\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        80
+      ],
+      "id": "102eefa5-6e87-4a51-83ca-4beeb785ef66",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "549b6898-ab58-4c74-86c9-0709b8be0e8b",
+      "name": "gpt-04-mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        1184
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "yKdIsoWDAp0r9m0a",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "e417755e-b2c7-43d1-99d8-8e3d0d5146cc",
+      "name": "gpt-4",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "yKdIsoWDAp0r9m0a",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "pinData": {
     "Gmail Trigger": [
       {
         "json": {
-          "id": "19eb7de31c711d54",
-          "threadId": "19eb7de31c711d54",
+          "id": "19eb8340e710e53b",
+          "threadId": "19eb8340e710e53b",
           "labelIds": [
             "UNREAD",
             "CATEGORY_PERSONAL",
             "INBOX"
           ],
-          "sizeEstimate": 65057,
+          "sizeEstimate": 11080,
           "headers": {
             "delivered-to": "Delivered-To: thisurakaweerasekera@gmail.com",
-            "received": "Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])\r\n        by mx.google.com with SMTPS id d75a77b69052e-517fb50ae3bsor379781cf.0.2026.06.11.11.07.32\r\n        for <thisurakaweerasekera@gmail.com>\r\n        (Google Transport Security);\r\n        Thu, 11 Jun 2026 11:07:32 -0700 (PDT)",
-            "x-received": "X-Received: by 2002:a05:622a:607:b0:509:44c3:5fe7 with SMTP id\r\n d75a77b69052e-517ee28e150mr65992941cf.46.1781201251565; Thu, 11 Jun 2026\r\n 11:07:31 -0700 (PDT)",
-            "arc-seal": "ARC-Seal: i=1; a=rsa-sha256; t=1781201252; cv=none;\r\n        d=google.com; s=arc-20240605;\r\n        b=jEgHedZXTkYHDYaKGcMR278f6aWEL36kPUM4gkw38HKeNAfh57Mql1vJzIfQUhIcea\r\n         +rA5inmOEHeiw+MZAywHW3dJ9GltGYNp9psqOKwhEzaKqSOfCYt7//SQubklTYTgzHbM\r\n         Jv4tZxsr8Xic7U4+K+Xi+boYIiWEOQekztl3f6Tt2mUccn8EsUof8AFGMqDg0O57ah4c\r\n         xe8JuKGRdPC/qq0xjHx7T3Kg21iqQY60uaHQvZW/ySMsS1buthRTNXDon8WzEBqRPQOS\r\n         PXsRDMF0ae/MyWU/vtFa/qGSwA16eq3ULFQMpQupmrVqPcP4Fk8XLHfqLoi1Cy80iHDn\r\n         NzAw==",
-            "arc-message-signature": "ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;\r\n        h=to:subject:message-id:date:from:mime-version:dkim-signature;\r\n        bh=/XeiKsA9lT/VxYdNVWBQE0oK/w3jOUXEz6SS4XieZPk=;\r\n        fh=70tqIWZrrh4KwWS2eyZ3Zpi75oKCy7rSMdYdlu/UE6U=;\r\n        b=krYEb6shZ54u/WzBizWgg4bTF44LRH5yADiMWJti5qC4A+uarvpHvp/lRUEreJTdzm\r\n         NfwDD2FlKb5X50EQ/vu1WZhia5UvYCliW+Bv3k+NEfT6rtoMIaxKrxmT1+SC4GjkBqI3\r\n         p4MeSvdWq3jFkFCSKRSMHGXjvFbNziVudizNlq9Qy81dd0nWgoTzey2uaWN+vRsekisY\r\n         C9jZKcWBxDGBnMTH7pfdIXtIxva8oRnxYP323IdYEs7DFTWn8iafAgKSveh/xBxblAhs\r\n         ZsLW1e/NpqhSfmaFUoTsuYqnMm9gV2Btbcd9zGgGCeXwcEEW/jJDxOTMkQlwYXCYdYD8\r\n         PQAA==;\r\n        dara=google.com",
+            "received": "Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])\r\n        by mx.google.com with SMTPS id d75a77b69052e-517fb704ae4sor1633761cf.6.2026.06.11.12.41.19\r\n        for <thisurakaweerasekera@gmail.com>\r\n        (Google Transport Security);\r\n        Thu, 11 Jun 2026 12:41:19 -0700 (PDT)",
+            "x-received": "X-Received: by 2002:a05:622a:178f:b0:517:9648:f725 with SMTP id\r\n d75a77b69052e-517ee26961dmr63818621cf.50.1781206879344; Thu, 11 Jun 2026\r\n 12:41:19 -0700 (PDT)",
+            "arc-seal": "ARC-Seal: i=1; a=rsa-sha256; t=1781206879; cv=none;\r\n        d=google.com; s=arc-20240605;\r\n        b=PHTQ/zxMdxjQD8xgc6E2ggakl4NmpVHpUNWtObEROIZXQDkO1HPmYN3Ypa7i3Gugig\r\n         IWPb6JV45edAQQQ0osC+0bmPY4ZfraYfHDCEA9xIRDWj28IRWysPZIzIxxOyQ6WQ67lY\r\n         ym/pRl/SKfbM+dX91KGUzjeHjehEf7RYlg14WJb1xWwtTzQJFlebhNOCtAHNaIng7Aq/\r\n         fOkCiKAaLK1DBLFLLeWGn04/a+gE1Cna4867z5KVvtXf8y1qbhBWDVegTKmimoWygvWy\r\n         tHtu6r5+p0wn/dhfbn9JluQeAkx8HEmjbl9wWkWw03uCsyYQrt8D7XipM2yUJx5pp6tq\r\n         YTVQ==",
+            "arc-message-signature": "ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;\r\n        h=to:subject:message-id:date:from:mime-version:dkim-signature;\r\n        bh=daNwTnLpVhcUCrwNHTzgHgUKd2EwU8/4aFpk942erBE=;\r\n        fh=70tqIWZrrh4KwWS2eyZ3Zpi75oKCy7rSMdYdlu/UE6U=;\r\n        b=VehjCHEqGXr3nsF/dXCQnpd7XsqKxyyy3El+U8ru6i/XS0srsJJR+9WuIwBB+wwJ8e\r\n         nGOpvCwkuw1lRtiKMwIYoaHfQIZOmRkHXnPPWdub7zEzHy6z8ninOWFgtq/0lybk/szL\r\n         HAzfTqMIbHuoi3fIZs0oOEjK6/FpDpJf4LXgfZhZfNU6YrorLliIc2/y+sWyBEuHALox\r\n         4oe406F7eNyZ+fGYs6Y7u2D5sF01VbMVH7oo9lCer6WhLkxzEmLXv2T92BhB0yLIBOCs\r\n         u1swT48wnbCM8Y+tmM+cHIcaRTORXhq4pTfp9MV1qjTvyfxn4H+nFCHKxkaZg1nI3LoM\r\n         +S4Q==;\r\n        dara=google.com",
             "arc-authentication-results": "ARC-Authentication-Results: i=1; mx.google.com; arc=none",
             "return-path": "Return-Path: <thisurakadev@gmail.com>",
             "received-spf": "Received-SPF: pass (google.com: domain of thisurakadev@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;",
-            "authentication-results": "Authentication-Results: mx.google.com;\r\n       dkim=pass header.i=@gmail.com header.s=20251104 header.b=hl0jehOc;\r\n       arc=pass (i=1);\r\n       spf=pass (google.com: domain of thisurakadev@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=thisurakadev@gmail.com;\r\n       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;\r\n       dara=pass header.i=@gmail.com",
-            "dkim-signature": "DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=gmail.com; s=20251104; t=1781201252; x=1781806052; dara=google.com;\r\n        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject\r\n         :date:message-id:reply-to;\r\n        bh=/XeiKsA9lT/VxYdNVWBQE0oK/w3jOUXEz6SS4XieZPk=;\r\n        b=hl0jehOcquI4ow58dZ5RhuUgo0b+n7rzcB/hLj3HaGO+o0bpz0j3Pw+74zFSqHeVlM\r\n         A7oFlUuP2y4GYKmlhqnFeOAoZbMpUQauaSAPTEOKWcFeJ0f+E1r9b8gFbMkM+Ox90xAs\r\n         4tXDfXLYoPUow1Bv7DAXngWxCfthdW1BzM/poo5f0wELerMNFCQjXYJNaseC/weGAQFT\r\n         LfbFdXAVyEFQ2oJrLvH62k9kf8R6s2kwZjuU/E3UnPZMQ6mAB2T7vXrJcvHKN/PHVVeN\r\n         OXVEXxOOGJYpZySFEB27KA6mg+HKBZYzYs17yA9Q7ccL5YWUJFWFR4zBXBHUTVtwC7WG\r\n         hw8Q==",
-            "x-google-dkim-signature": "X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=1e100.net; s=20251104; t=1781201252; x=1781806052;\r\n        h=to:subject:message-id:date:from:mime-version:x-gm-gg\r\n         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;\r\n        bh=/XeiKsA9lT/VxYdNVWBQE0oK/w3jOUXEz6SS4XieZPk=;\r\n        b=swo+LOvchtNAJaRRNPZBlMX4Yo6GVnRejZ+I/bK+zEhw+//Nfg3SdLhAW6Cr0jiI89\r\n         29/MgLXEWOD1sNlJFLJmtMfuKAk91ynVBTiE3GqaqFAkzBoFH/PF/oPZWsqDvJfJAg00\r\n         wR4E2t5GYZo8xgPm/Ljqnp2szfd/jFmb4xaUdm4qJecLdrTI8vd4lT4uC9ggVCtjbiDw\r\n         zbmC2N4Soa0pDgp/QasFc0hVL4dqDCSVzE3BW8pbVz5d73ErgpBTWh3PpWkThvlQs6qO\r\n         zGq8CjCh9hPsSj7LZS2aZZSRgj6+DSZkYrttw4yil2ad1Aw5hHHC69ZGle/f9ZA6LUcd\r\n         qD6w==",
-            "x-gm-message-state": "X-Gm-Message-State: AOJu0Yz5w9yvqVQFJOme/vdN3KpYw+MJNFxjAVgqQe3cBXIi3qVEPr5B\r\n\tvT38MloP+39FLIMN1de3cVjrrfrJIBKlwEgQ4DjBDakRYEFRTwRNI6JekkPuVJnad4wW+q27wyT\r\n\t5tmmeEjl5JhTjEinYKNlx6ct4cF7rFBQKxB75",
-            "x-gm-gg": "X-Gm-Gg: Acq92OGXmTBNl0MoThbz4HeC9Z4G8sPMtRCCJ/hbFNNYO+hdO6RA1+itnNc0OMm6ac8\r\n\tWs5GKBBD7N3dgtMWCQk1fjSU709CLkVkswHPttKRLtBB37kal98m4sukwhyi82gWT9sa+biHI86\r\n\tctzyI3nRa04M74o4/HllwL8qnAerGTlK3um3FaBtsXvHqtmTYmhFj8YCwO/qCRXLBvFRRIM1lYR\r\n\tcbbyKuipxqXKd/oam8/WBOgIO6KgY5/drkCTvWfX9Y4Wxpec80fJKz2ZzuYZAJdi7nau2I+dqud\r\n\t2C1OYuI=",
+            "authentication-results": "Authentication-Results: mx.google.com;\r\n       dkim=pass header.i=@gmail.com header.s=20251104 header.b=bVBGjQEL;\r\n       arc=pass (i=1);\r\n       spf=pass (google.com: domain of thisurakadev@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=thisurakadev@gmail.com;\r\n       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;\r\n       dara=pass header.i=@gmail.com",
+            "dkim-signature": "DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=gmail.com; s=20251104; t=1781206879; x=1781811679; dara=google.com;\r\n        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject\r\n         :date:message-id:reply-to;\r\n        bh=daNwTnLpVhcUCrwNHTzgHgUKd2EwU8/4aFpk942erBE=;\r\n        b=bVBGjQELgi5OABUBP0ahnMcm8OBYG7q1XYuozDFV8EExwJqbbJu44R5gxmmInbpgyK\r\n         1HfSwSp8ywwXaeJETs5SpDjzCoKOznSp8Gxu5mQdKfgSrbDE968InuNVwq/252OV6BeT\r\n         26xyoO4xKikJjp/EM+1T55ZAzlxNKa3Dl21zrjENQAL0laeOQjEEQwoFbu8EqTh5htLb\r\n         VbpCZKsoz+zVGLRdT0N26yRIVHzBtE8mUOjU1XTIAACwWMrlRgkaUIjBo6dlFTjkSuqh\r\n         9JRvvHW9P0aHbEEpE8v7QVcUDiC95jj/yl/AWm8Yj5frJFQMGRd5WoF06OLSJm1rQBB4\r\n         aEHQ==",
+            "x-google-dkim-signature": "X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=1e100.net; s=20251104; t=1781206879; x=1781811679;\r\n        h=to:subject:message-id:date:from:mime-version:x-gm-gg\r\n         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;\r\n        bh=daNwTnLpVhcUCrwNHTzgHgUKd2EwU8/4aFpk942erBE=;\r\n        b=XPPYMi+BNRqsgqduRXb27hDobTuBjLh4PSgpIesCh/pnMWNzE/BfPqcPNMZF3dkczl\r\n         qT+26srswBZEK4C1U+UZW9Qfz9WXxDR9BfMBcJHPAfpMIFyAT/L51MLMCRREn72+CMJN\r\n         cOrYZuKEXonNyCKjdU5RV+q9VKiosGlowEBZM3maiebFnjJdqmuFXETncj18cWNAmcby\r\n         vDSRd2qVcPdVnP2sqlWY1rfzFuvWixjpAtUO2cI4pNCK/z6HR5ha4+oW0ur8DAwD5aad\r\n         uMDoy1nxf7++bv4MerhgBqovbA/hPvR6Idlf7Ahp6qWRe7aKfQbnFpDIKuqeZD6STbEZ\r\n         E+Tw==",
+            "x-gm-message-state": "X-Gm-Message-State: AOJu0YyybM75vnebFQW1HigKPdRSW0r6Q0M0h1Jtnk5mHflzzl1OGJxs\r\n\tKih1JRhyI8hVYdRciptn/vjAmCMIRJ/UGMxsMkk0rorbM/mJ+0JnYDOqy4nQxFEjKBA2gQN2YdV\r\n\tE8Dg/ufncGMavPQuTBsfdxVIx/el5G6XXNL1Y",
+            "x-gm-gg": "X-Gm-Gg: Acq92OHHGa8ia9TH4g+hgs4JDGl1uksh/asRKcnPc99hDnwDAn/7Qtx+DHAxM6wbm6P\r\n\tB4/3nNajU97JLRK9Sn6QgQ3/mXAg+p9eYI+1s/anXTM63nNxJ+dkMxj3UERZq6z9fz5UPnap+8T\r\n\tR09fUnR7CguKyVDl6B5AeSZeoBQ+1e3gNVspQeXuZGhdGv3sXXMOWBpu3vXi4AVP4Kq78/ByX/S\r\n\t6YU0HEfP+sIA3SSZhC5BJ92a59W1yjaN02NPBOmcfrCMbth9X+In7Naf/s76ewRHghZjgliqGk0\r\n\tVfQwk5/IKvufvDeM583jY7QPQGL3/3En4sFksr/7KnC4MbhPOdW2jRW4pMhA605ZVKZ6/J7rNdU\r\n\t=",
             "mime-version": "MIME-Version: 1.0",
             "from": "From: Thisuraka Weerasekera <thisurakadev@gmail.com>",
-            "date": "Date: Thu, 11 Jun 2026 23:37:21 +0530",
-            "x-gm-features": "X-Gm-Features: AVVi8CdtEl9yRBIBgStP4KuOhjdRwKUoBYhkhmaR70tFchvGwKtDvpGmCu_emeU",
-            "message-id": "Message-ID: <CACyEFQi7LDJ3Q7u=-DCOytmL_inbUmyVgqYv2cPktbUUkO0-ZQ@mail.gmail.com>",
-            "subject": "Subject: project help needed",
+            "date": "Date: Fri, 12 Jun 2026 01:11:10 +0530",
+            "x-gm-features": "X-Gm-Features: AVVi8Cf9VsgyGEuiZGCNAB_s7vko4XqLi5NsX9CVjQAh-HqufnTIfBNzKv0mPVs",
+            "message-id": "Message-ID: <CACyEFQhFevmWuwTyygOkR+8U0X+qjL1aVuzmXHzPQ1VwVz4E3w@mail.gmail.com>",
+            "subject": "Subject: Tech Requirements for Marketplace Platform",
             "to": "To: \"thisurakaweerasekera@gmail.com\" <thisurakaweerasekera@gmail.com>",
-            "content-type": "Content-Type: multipart/mixed; boundary=\"000000000000dfa6af0653fe3b35\""
+            "content-type": "Content-Type: multipart/mixed; boundary=\"00000000000050ec570653ff8b23\""
           },
-          "html": "<div dir=\"ltr\">hi<br><br>we need some software built. details in the attachment. its kind of urgent. can you call me?<br><br>thomas<br>+49 176 555 0123<br></div>\n",
-          "text": "hi\n\nwe need some software built. details in the attachment. its kind of urgent.\ncan you call me?\n\nthomas\n+49 176 555 0123\n",
-          "textAsHtml": "<p>hi</p><p>we need some software built. details in the attachment. its kind of urgent.<br/>can you call me?</p><p>thomas<br/>+49 176 555 0123</p>",
-          "subject": "project help needed",
-          "date": "2026-06-11T18:07:21.000Z",
+          "html": "<div dir=\"ltr\">Hello,<br><br>We&#39;re building a luxury goods marketplace and have put together our initial requirements in the attached spreadsheet. It&#39;s still a rough draft — some items might change after our internal review next week.<br><br>We haven&#39;t finalized a budget yet but we&#39;re thinking somewhere in the $80-120K range. Not sure if that&#39;s realistic — would appreciate your honest feedback.<br><br>Also, we&#39;re debating between building a mobile app vs just making the website mobile-responsive. What would you recommend?<br><br>Thanks,<br>Amara Okafor<br>Founder, LuxeMarket<br></div>\n",
+          "text": "Hello,\n\nWe're building a luxury goods marketplace and have put together our initial\nrequirements in the attached spreadsheet. It's still a rough draft — some\nitems might change after our internal review next week.\n\nWe haven't finalized a budget yet but we're thinking somewhere in the\n$80-120K range. Not sure if that's realistic — would appreciate your honest\nfeedback.\n\nAlso, we're debating between building a mobile app vs just making the\nwebsite mobile-responsive. What would you recommend?\n\nThanks,\nAmara Okafor\nFounder, LuxeMarket\n",
+          "textAsHtml": "<p>Hello,</p><p>We&apos;re building a luxury goods marketplace and have put together our initial<br/>requirements in the attached spreadsheet. It&apos;s still a rough draft &mdash; some<br/>items might change after our internal review next week.</p><p>We haven&apos;t finalized a budget yet but we&apos;re thinking somewhere in the<br/>$80-120K range. Not sure if that&apos;s realistic &mdash; would appreciate your honest<br/>feedback.</p><p>Also, we&apos;re debating between building a mobile app vs just making the<br/>website mobile-responsive. What would you recommend?</p><p>Thanks,<br/>Amara Okafor<br/>Founder, LuxeMarket</p>",
+          "subject": "Tech Requirements for Marketplace Platform",
+          "date": "2026-06-11T19:41:10.000Z",
           "to": {
             "value": [
               {
@@ -700,18 +712,18 @@
             "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Thisuraka Weerasekera</span> &lt;<a href=\"mailto:thisurakadev@gmail.com\" class=\"mp_address_email\">thisurakadev@gmail.com</a>&gt;</span>",
             "text": "\"Thisuraka Weerasekera\" <thisurakadev@gmail.com>"
           },
-          "messageId": "<CACyEFQi7LDJ3Q7u=-DCOytmL_inbUmyVgqYv2cPktbUUkO0-ZQ@mail.gmail.com>"
+          "messageId": "<CACyEFQhFevmWuwTyygOkR+8U0X+qjL1aVuzmXHzPQ1VwVz4E3w@mail.gmail.com>"
         },
         "binary": {
           "attachment_0": {
-            "mimeType": "application/pdf",
-            "fileType": "pdf",
-            "fileExtension": "pdf",
+            "mimeType": "text/csv",
+            "fileType": "text",
+            "fileExtension": "csv",
             "data": "filesystem-v2",
-            "fileName": "project_notes.pdf",
-            "id": "filesystem-v2:workflows/QTpdj8ILRthKhdSA/executions/temp/binary_data/53b683bb-d7f1-4c88-bfc3-2b571361f0d0",
-            "fileSize": "42 kB",
-            "bytes": 41992
+            "fileName": "luxemarket_requirements.csv",
+            "id": "filesystem-v2:workflows/QTpdj8ILRthKhdSA/executions/temp/binary_data/11f28c0d-a035-4c35-acf0-419a984bc8ca",
+            "fileSize": "1.7 kB",
+            "bytes": 1699
           }
         },
         "pairedItem": {
@@ -780,17 +792,6 @@
         ]
       ]
     },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Text Classifier",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Set: inquiry": {
       "main": [
         [
@@ -831,38 +832,6 @@
         ]
       ]
     },
-    "Extract Text": {
-      "main": [
-        [
-          {
-            "node": "Merge Attachment Texts",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Guardrails: Pre RAG",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Guardrails: Post RAG",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Switch": {
       "main": [
         [
@@ -874,7 +843,7 @@
         ],
         [
           {
-            "node": "Extract Text",
+            "node": "Extract CSV",
             "type": "main",
             "index": 0
           }
@@ -993,6 +962,60 @@
           }
         ]
       ]
+    },
+    "Extract CSV": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Merge Attachment Texts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-04-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Guardrails: Pre RAG",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Guardrails: Post RAG",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -1000,7 +1023,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "59011502-47d6-40e7-a987-50c4ef4a136a",
+  "versionId": "f5a7e7ff-01e7-4af6-ba3c-1c28675fc5e1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cc8ab8ef167f079a4b5aac88a5ebc7299220f762da84c9209b04000df0f47a9a"
