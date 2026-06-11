@@ -1,0 +1,1011 @@
+{
+  "name": "Task",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "includeSpamTrash": false,
+          "labelIds": [
+            "INBOX"
+          ]
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "id": "889bd354-a3b9-4537-a086-9cfc5e0ff444",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -3264,
+        352
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bT5J5NkxiwWrkJg3",
+          "name": "ThisurakaWeerasekera"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convert plain text draft to professional HTML email with corporate signature\nconst draft = $('Guardrails: Post RAG').first().json.guardrailsInput || '';\nconst emailData = $('Gmail Trigger').first().json;\n\n// Convert each line to an HTML paragraph, escape HTML entities\nconst lines = draft.split('\\n');\nlet htmlBody = '';\nfor (const line of lines) {\n  if (line.trim() === '') {\n    htmlBody += '<br>';\n  } else {\n    const escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n    htmlBody += '<p style=\"margin: 0 0 8px 0;\">' + escaped + '</p>';\n  }\n}\n\nconst html = '<div style=\"font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #333333; line-height: 1.6;\">'\n  + htmlBody\n  + '<br>'\n  + '<div style=\"border-top: 2px solid #1B2A4A; padding-top: 12px; margin-top: 20px;\">'\n  + '<p style=\"margin: 0; font-weight: bold; color: #1B2A4A;\">ABC Company</p>'\n  + '<p style=\"margin: 2px 0; font-size: 12px; color: #666;\">hello@abccompany.io</p>'\n  + '<p style=\"margin: 2px 0; font-size: 12px; color: #666;\">Colombo | London | Melbourne</p>'\n  + '<p style=\"margin: 2px 0;\"><a href=\"https://www.abccompany.io\" style=\"color: #2C5282; font-size: 12px;\">www.abccompany.io</a></p>'\n  + '</div>'\n  + '</div>';\n\nreturn [{\n  json: {\n    html_reply: html,\n    plain_reply: draft,\n    subject: emailData.subject || '',\n    message_id: emailData.message_id || '',\n    thread_id: emailData.thread_id || '',\n    sender_email: emailData.sender_email || '',\n    attempts: $json.attempts || 1\n  }\n}];"
+      },
+      "id": "a99bef03-1f66-4a93-91b1-70de92ab0178",
+      "name": "Code: Convert to HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "message": "={{ $json.html_reply }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "95afb85b-e5db-4ae7-958c-f555de62c726",
+      "name": "Gmail: Reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        256
+      ],
+      "webhookId": "d527b9eb-b474-42c6-897a-de41323f03e5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bT5J5NkxiwWrkJg3",
+          "name": "ThisurakaWeerasekera"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ '[Subject: ' + ($json.subject || 'No subject') + '] [From: ' + ($json.sender || '') + '] ' + ($json.email_body || '') }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "inquiry",
+              "description": "New business inquiry, request for quote or proposal, question about services, pricing, capabilities, availability, or interest in starting a project. The sender is a potential or existing client interested in engaging ABC Company for a project or service."
+            },
+            {
+              "category": "follow_up",
+              "description": "Reply to an existing conversation or email thread. The sender is continuing a previous email exchange, referencing earlier discussions, or responding to something ABC Company previously sent. Often contains 'Re:' in the subject line."
+            },
+            {
+              "category": "spam",
+              "description": "Marketing email, promotional content, phishing attempt, automated message, mailer-daemon bounce notification, newsletter subscription, mass mailing, or unsolicited sales pitch from a vendor trying to sell to ABC Company."
+            },
+            {
+              "category": "unrelated",
+              "description": "Not a business inquiry, not spam, and not a follow-up. Examples: internal email sent to wrong address, personal message, job application, recruitment outreach, survey request, event invitation unrelated to ABC Company's services, or out-of-office auto-replies."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d5be82ab-b244-45f1-833e-4eebe537b78d",
+      "name": "Text Classifier",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        -3056,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "ee11572e-9779-42ac-9dbd-8692589e769e",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -3056,
+        656
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "yKdIsoWDAp0r9m0a",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-cat-inquiry",
+              "name": "category",
+              "value": "inquiry",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "405e171c-68a1-4a6d-a0a2-3504cc774ee7",
+      "name": "Set: inquiry",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2672,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-cat-followup",
+              "name": "category",
+              "value": "follow_up",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "309d9cf0-fa8d-402f-b569-6e5ae7c878ac",
+      "name": "Set: follow_up",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2672,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-cat-spam",
+              "name": "category",
+              "value": "spam",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "753458ce-783d-4f8b-bb6b-97338b84efac",
+      "name": "Set: spam",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2672,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-cat-unrelated",
+              "name": "category",
+              "value": "unrelated",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "9fcf736c-7ced-4400-9be6-64d1d8e0a667",
+      "name": "Set: unrelated",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2672,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-has-attachments",
+              "leftValue": "={{ $binary && Object.keys($binary).length > 0 }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a2dee2fb-e934-43c0-bfc4-98cb84eec8f7",
+      "name": "IF: Has Attachments",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2448,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "=file",
+        "options": {}
+      },
+      "id": "00c4bcd2-e117-4515-814c-c2e3a963dc10",
+      "name": "Extract PDF",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "9f4d59bf-669d-45b8-acdb-ec1c3d94b474",
+      "name": "Extract Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "549b6898-ab58-4c74-86c9-0709b8be0e8b",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        1024
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "yKdIsoWDAp0r9m0a",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{Object.values($('Gmail Trigger').item.binary)[0]?.mimeType}}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c282601e-bbb7-43da-bc9f-0a45729a16af"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a780e5bc-a554-4c59-846c-a13f9e3c43cd",
+                    "leftValue": "={{Object.values($('Gmail Trigger').item.binary)[0]?.mimeType}}",
+                    "rightValue": "text/csv",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CSV"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -2048,
+        -32
+      ],
+      "id": "fe6bd32d-ba24-4d01-81c9-05870c8c547f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User Email Content: {{ $('Edit Fields').item.json.email_body }}\n\nAttachment Content: {{ $('Merge Attachment Texts').item.json.attachment_text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a professional sales assistant for ABC Company, a full-service technology agency headquartered in Colombo, Sri Lanka with offices in London and Melbourne (60 professionals, ISO 27001 certified, AWS Advanced Consulting Partner).\n\nYour job is to draft email replies to incoming business inquiries using the knowledge base search tool.\n\nKNOWLEDGE BASE CASE STUDIES (these are the ONLY project names you may cite):\n- NovaPay (fintech payment platform)\n- MediConnect (healthcare patient portal — HIPAA compliant, HL7/FHIR, 94% no-show reduction)\n- TradeNest (e-commerce marketplace — 120% GMV growth, Stripe Connect, 78% faster page loads)\n- InsightFlow (SaaS analytics dashboard)\n- SwiftRoute (logistics fleet management — 23% route efficiency, 94% on-time delivery)\n- LearnSpark (edtech learning platform)\n- DwellDesk (proptech property management)\n- GlobalMed Supplies (enterprise CRM integration — SAP)\n\nBEFORE DRAFTING, SEARCH THE KB TOOL:\n1. Search for case studies matching the sender's industry\n2. Search for relevant services and technology capabilities\n3. Search for pricing ranges and engagement models\n4. If specific tech is mentioned (HIPAA, FHIR, Stripe, SAP), search for that term\n5. Even for brief/informal emails, if you can identify the industry, search for and cite the matching case study\n\nDRAFTING RULES:\n1. Cite at least one case study BY ITS EXACT NAME from the list above with a concrete metric from the tool results. Example: \"In our MediConnect project, we achieved a 94% reduction in appointment no-shows.\"\n2. If the email has attachment content, reference specific details from it (budget figures, feature names, requirements, timeline dates).\n2b. If EXTRACTED REQUIREMENTS are provided, you MUST reference at least 3 specific items from them in your reply (e.g., name specific features like telehealth video consultations or secure messaging, cite the exact budget range, acknowledge timeline milestones). This proves you read the attachment — do NOT say we will review the attached document.\n3. Answer EVERY question the sender asked. Do not defer to a call if the KB has the answer.\n4. If a budget is mentioned, compare it to pricing from KB results. Be honest — if the budget is tight for the scope, say so and suggest phasing.\n5. If asked for a technical recommendation, give a clear one based on KB data.\n6. Mention specific technologies ABC Company uses that match the sender's needs.\n7. Be professional, warm, concise. Under 500 words for emails with attachments or RFPs, under 300 words for brief inquiries.\n8. Address the sender by their actual name from the From header. Examples: \"Dear Dr. Roberts,\" or \"Hi Amara,\" or \"Hi Thomas,\"\n9. Sign off EXACTLY as:\n   Best regards,\n   ABC Company Sales Team\n   hello@abccompany.io\n10. If the sender mentions a budget range, you MUST acknowledge it and compare it to ABC Company pricing from KB results. If the budget is tight for the described scope, say so honestly and suggest phasing the work.\n12. If a submission deadline or timeline is mentioned (e.g., RFP Response Due June 30), acknowledge it and confirm you can meet it.\n13. Address the sender by their name as shown in the From line of the email. Do NOT extract names from attachment content.\n11. If the sender asks for a recommendation between technical approaches (e.g., native vs hybrid app, mobile app vs responsive website, monolith vs microservices), give a clear recommendation with reasoning from KB data. Do not defer technical recommendations to a call when you have enough context to advise.\n\nFORMATTING — CRITICAL:\n- Write PLAIN TEXT only. No markdown whatsoever.\n- No ## headers, no **bold**, no *italic*, no []() links, no bullet points with *, no --- dividers.\n- Use line breaks and short paragraphs to structure the email.\n\nHANDLING INCOMPLETE OR BRIEF EMAILS:\n- If the email body is very brief or informal (few sentences, no detailed requirements), do NOT fill in gaps by citing random case studies. However, when the sender's industry IS clearly identifiable (e.g., they mention fleet tracking, patient portal, marketplace) even in a brief email, DO cite the matching case study with one specific metric — it demonstrates relevant domain experience without being gratuitous. A brief, relevant case study reference is valuable; a generic, unrelated one is not.\n- When the email lacks enough context to determine the sender's industry or needs, do NOT cite case studies just to fill space. But when the industry IS clear from keywords (logistics, healthcare, payments, marketplace, etc.), always cite the matching case study. Only omit case studies when the domain is genuinely ambiguous.\n\nHANDLING MISSING ATTACHMENTS:\n- If the email mentions an attachment but the context does not include attachment content (or shows EXTRACTION FAILED), do NOT say \"I couldn't access the attachment\" or anything similar. Instead: acknowledge receipt of the attachment, explain you would like to review it in detail on a call, and ask the sender to confirm a time to discuss.\n\nHANDLING CALL/MEETING REQUESTS:\n- If the sender asks for a call, phone conversation, or meeting, ALWAYS acknowledge that request and propose a next step: \"We would be happy to schedule a call to discuss your project in detail. Please let us know your availability, or reply with a few time slots that work for you.\"\n\nABSOLUTELY FORBIDDEN:\n- NEVER use placeholder text in square brackets: [Name], [Recipient's Name], [Your Full Name], [Your Position], [Your Contact Information], or ANY [text in brackets].\n- NEVER invent or fabricate case study names. Only use the 8 names listed above. If none match, say \"we have delivered similar projects\" without naming one.\n- NEVER reference internal KB document filenames (like abc_03_case_studies.pdf, abc_05_pricing_guide.pdf, etc.) — these are internal files that must never appear in client emails.\n- NEVER include metadata, source references, or links to internal documents.\n- NEVER write a generic reply that could apply to any company. Every reply MUST include specific details from KB tool results."
+        }
+      },
+      "id": "a4985053-a9f0-4a9f-a2ec-267cc8d8c8b1",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -944,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "flat_rock_test",
+        "toolDescription": "Search ABC Company's knowledge base for information about services, pricing, portfolio/case studies, technology stack, team capabilities, engagement models, FAQs, and company policies. Use this tool to find accurate information before drafting a reply. Search multiple times with different queries to get comprehensive results.",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "flat-rock-test",
+          "mode": "list",
+          "cachedResultName": "flat-rock-test"
+        },
+        "topK": 5,
+        "options": {}
+      },
+      "id": "1717b3d5-14d2-41f4-bdbc-3796350c9ac1",
+      "name": "Qdrant Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        752
+      ],
+      "credentials": {
+        "qdrantApi": {
+          "id": "b6ziC8QdM0vyOBWr",
+          "name": "Qdrant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "e09adb06-fedd-41d9-ac35-fe5e74e3eaec",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        944
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "yKdIsoWDAp0r9m0a",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=User Email Content: {{ $('Gmail Trigger').item.json.text }}\n\n{{ $binary && Object.keys($binary).length > 0 \n  ? 'Attachment Content: ' + $('Merge Attachment Texts').item.json.attachment_text \n  : '' }}",
+        "guardrails": {
+          "jailbreak": {
+            "value": {
+              "threshold": 0.7
+            }
+          },
+          "nsfw": {
+            "value": {
+              "threshold": 0.7
+            }
+          },
+          "topicalAlignment": {
+            "value": {
+              "threshold": 0.7,
+              "prompt": "You are a topical-alignment evaluator for ABC Company's inbound email system.\n\nCOMPANY PROFILE:\nABC Company is a full-service technology agency that designs, builds, and maintains custom software solutions.\n\nCORE SERVICES (on-topic if the inquiry relates to any of these):\n- Custom web application development\n- Mobile application development (iOS, Android, cross-platform)\n- Cloud infrastructure & DevOps consulting\n- AI / Machine Learning solutions\n- UI/UX design and prototyping\n- Quality assurance & software testing\n- Staff augmentation (developers, QA, DevOps engineers)\n- Software maintenance & ongoing support\n- Technical consulting & fractional CTO services\n\nINDUSTRY VERTICALS (on-topic — ABC Company has domain expertise here):\n- Fintech & financial services\n- Healthcare & health-tech (including HIPAA/regulatory compliance)\n- E-Commerce & retail platforms\n- SaaS products\n- Logistics & supply chain\n- EdTech & e-learning\n- PropTech & real estate technology\n- Media & entertainment\n\nON-TOPIC — allow these through:\n1. New business inquiries asking about any of the above services or verticals\n2. Requests for proposal (RFP), requests for quote (RFQ), or pricing questions\n3. Questions about ABC Company's capabilities, availability, team, or process\n4. Follow-up replies continuing an existing business conversation\n5. Partnership or subcontracting proposals related to software/technology\n6. Meeting or demo scheduling requests from prospective or existing clients\n7. Forwarded content that contains a genuine business inquiry overlay, even if the forwarded portion itself is promotional\n\nOFF-TOPIC — flag these as violations:\n1. Job applications, recruitment outreach, or resume submissions\n2. Marketing emails, newsletters, or promotional blasts selling TO ABC Company\n3. Personal messages unrelated to any business engagement\n4. Inquiries about services ABC Company does not offer (e.g., physical construction, catering, legal counsel, accounting, non-tech recruitment)\n5. Survey requests, event invitations, or charity solicitations with no technology project component\n6. Automated system notifications, bounces, or out-of-office replies (note: these should already be caught by pre-filters, but flag them if they reach this stage)\n\nEDGE CASE GUIDANCE:\n- If an email is from an unfamiliar industry BUT asks about software development, cloud, AI, or any core service → ON-TOPIC (ABC Company serves diverse verticals)\n- If an email mentions a technology project but the primary ask is non-technical (e.g., \"we need legal advice for our app\") → OFF-TOPIC\n- If uncertain whether the inquiry relates to ABC Company's services → lean ON-TOPIC (false negatives are costlier than false positives at this stage, since human approval follows)\n\nEvaluate the provided text and determine whether it falls within ABC Company's business scope."
+            }
+          }
+        }
+      },
+      "id": "4d423ccb-4043-4c81-b4d9-4957b730596d",
+      "name": "Guardrails: Pre RAG",
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 1,
+      "position": [
+        -1328,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output }}",
+        "guardrails": {
+          "nsfw": {
+            "value": {
+              "threshold": 0.7
+            }
+          }
+        }
+      },
+      "id": "1875acf2-6aae-4aea-91c6-91524b9836c2",
+      "name": "Guardrails: Post RAG",
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "68f1b099-e6c3-4358-82e5-953c12102990",
+              "name": "attachment_text",
+              "value": "={{ $('Edit Fields').item.json.mime_type === 'application/pdf'\n    ? $json.text\n    : $json.data\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1552,
+        -16
+      ],
+      "id": "c272c477-5882-41e3-9d0b-b1448b88290e",
+      "name": "Merge Attachment Texts"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0B9E035J83"
+        },
+        "message": "Okay to proceed?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "id": "7c5be0d5-e1a9-497d-8d46-494ee37275b7",
+      "name": "Slack: Send and Wait",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        272
+      ],
+      "webhookId": "wf6-approval-webhook",
+      "credentials": {
+        "slackApi": {
+          "id": "Z2DYrW1q0cWw7Z67",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "35a167e2-b27a-4f52-9eab-d29b3607532b",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        96,
+        272
+      ],
+      "id": "db7cd4b4-9029-4882-b83a-03a97fc9077c",
+      "name": "Approved?"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0B9E035J83"
+        },
+        "messageType": "block",
+        "blocksUi": "{\n  \"blocks\": [\n    {\n      \"type\": \"header\",\n      \"text\": {\n        \"type\": \"plain_text\",\n        \"text\": \"New Sales Inquiry: Approval Required\",\n        \"emoji\": true\n      }\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*From:*\\nDr. Amanda Roberts\" },\n        { \"type\": \"mrkdwn\", \"text\": \"*Email:*\\namanda.roberts@healthfirst.com\" }\n      ]\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*Subject:*\\nRFP: Patient Portal Development — HealthFirst Inc.\" },\n        { \"type\": \"mrkdwn\", \"text\": \"*Received:*\\nJun 11, 2026 at 8:17 PM\" }\n      ]\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*Attachments:*\\n📎 healthfirst_rfp.pdf\" }\n      ]\n    },\n    { \"type\": \"divider\" },\n    {\n      \"type\": \"rich_text\",\n      \"elements\": [\n        {\n          \"type\": \"rich_text_section\",\n          \"elements\": [\n            { \"type\": \"emoji\", \"name\": \"incoming_envelope\" },\n            { \"type\": \"text\", \"text\": \"  Original Email\\n\", \"style\": { \"bold\": true } }\n          ]\n        },\n        {\n          \"type\": \"rich_text_quote\",\n          \"elements\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Hi ABC Company,\\n\\nPlease find attached our Request for Proposal for a patient portal development project. We've outlined our requirements, timeline, and budget expectations in the document.\\n\\nWe're particularly interested in your healthcare experience and HIPAA compliance capabilities. Could you review the RFP and let us know if this is something your team can take on?\\n\\nHappy to schedule a discovery call at your convenience.\\n\\nBest regards,\\nDr. Amanda Roberts\\nCTO, HealthFirst Inc.\\namanda.roberts@healthfirst.com\\n+1 (415) 555-0192\"\n            }\n          ]\n        }\n      ]\n    },\n    { \"type\": \"divider\" },\n    {\n      \"type\": \"rich_text\",\n      \"elements\": [\n        {\n          \"type\": \"rich_text_section\",\n          \"elements\": [\n            { \"type\": \"emoji\", \"name\": \"pencil2\" },\n            { \"type\": \"text\", \"text\": \"  Drafted Reply\\n\", \"style\": { \"bold\": true } }\n          ]\n        },\n        {\n          \"type\": \"rich_text_section\",\n          \"elements\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Dear Dr. Roberts,\\n\\nThank you for reaching out to ABC Company regarding the patient portal development project. We're excited to review your RFP and believe our healthcare technology expertise makes us an excellent fit for this initiative.\\n\\nIn our MediConnect project, we achieved a 94% reduction in appointment no-shows through a comprehensive patient portal with HIPAA-compliant architecture, HL7/FHIR integration, and secure messaging capabilities.\\n\\nWe would be happy to schedule a discovery call to discuss your requirements in detail. Please let us know your availability, or reply with a few time slots that work for you.\\n\\nBest regards,\\nABC Company Sales Team\\nhello@abccompany.io\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"type\": \"context\",\n      \"elements\": [\n        { \"type\": \"mrkdwn\", \"text\": \"🤖 Auto-drafted by AI Agent  ·  Awaiting human approval\" }\n      ]\n    }\n  ]\n}",
+        "otherOptions": {}
+      },
+      "id": "ae034643-da33-4918-a6e8-edc0fde639d8",
+      "name": "Slack: Send",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        272
+      ],
+      "webhookId": "wf6-approval-webhook",
+      "credentials": {
+        "slackApi": {
+          "id": "Z2DYrW1q0cWw7Z67",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e095329-519c-4fd0-990c-859747360a41",
+              "name": "mime_type",
+              "value": "={{\n  $('Gmail Trigger').item.binary\n    ? Object.values($('Gmail Trigger').item.binary)[0]?.mimeType\n    : \"\"\n}}\n\n",
+              "type": "string"
+            },
+            {
+              "id": "5c8e46cd-3264-44be-80ae-8776d5d8ec71",
+              "name": "file",
+              "value": "={{ \n  $('Gmail Trigger').item.binary\n    ? Object.keys($('Gmail Trigger').item.binary)[0]\n    : \"\"\n}}",
+              "type": "binary"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2256,
+        -32
+      ],
+      "id": "a54b3111-25e5-4eeb-aafd-b7aca668853e",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "Gmail Trigger": [
+      {
+        "json": {
+          "id": "19eb7de31c711d54",
+          "threadId": "19eb7de31c711d54",
+          "labelIds": [
+            "UNREAD",
+            "CATEGORY_PERSONAL",
+            "INBOX"
+          ],
+          "sizeEstimate": 65057,
+          "headers": {
+            "delivered-to": "Delivered-To: thisurakaweerasekera@gmail.com",
+            "received": "Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])\r\n        by mx.google.com with SMTPS id d75a77b69052e-517fb50ae3bsor379781cf.0.2026.06.11.11.07.32\r\n        for <thisurakaweerasekera@gmail.com>\r\n        (Google Transport Security);\r\n        Thu, 11 Jun 2026 11:07:32 -0700 (PDT)",
+            "x-received": "X-Received: by 2002:a05:622a:607:b0:509:44c3:5fe7 with SMTP id\r\n d75a77b69052e-517ee28e150mr65992941cf.46.1781201251565; Thu, 11 Jun 2026\r\n 11:07:31 -0700 (PDT)",
+            "arc-seal": "ARC-Seal: i=1; a=rsa-sha256; t=1781201252; cv=none;\r\n        d=google.com; s=arc-20240605;\r\n        b=jEgHedZXTkYHDYaKGcMR278f6aWEL36kPUM4gkw38HKeNAfh57Mql1vJzIfQUhIcea\r\n         +rA5inmOEHeiw+MZAywHW3dJ9GltGYNp9psqOKwhEzaKqSOfCYt7//SQubklTYTgzHbM\r\n         Jv4tZxsr8Xic7U4+K+Xi+boYIiWEOQekztl3f6Tt2mUccn8EsUof8AFGMqDg0O57ah4c\r\n         xe8JuKGRdPC/qq0xjHx7T3Kg21iqQY60uaHQvZW/ySMsS1buthRTNXDon8WzEBqRPQOS\r\n         PXsRDMF0ae/MyWU/vtFa/qGSwA16eq3ULFQMpQupmrVqPcP4Fk8XLHfqLoi1Cy80iHDn\r\n         NzAw==",
+            "arc-message-signature": "ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;\r\n        h=to:subject:message-id:date:from:mime-version:dkim-signature;\r\n        bh=/XeiKsA9lT/VxYdNVWBQE0oK/w3jOUXEz6SS4XieZPk=;\r\n        fh=70tqIWZrrh4KwWS2eyZ3Zpi75oKCy7rSMdYdlu/UE6U=;\r\n        b=krYEb6shZ54u/WzBizWgg4bTF44LRH5yADiMWJti5qC4A+uarvpHvp/lRUEreJTdzm\r\n         NfwDD2FlKb5X50EQ/vu1WZhia5UvYCliW+Bv3k+NEfT6rtoMIaxKrxmT1+SC4GjkBqI3\r\n         p4MeSvdWq3jFkFCSKRSMHGXjvFbNziVudizNlq9Qy81dd0nWgoTzey2uaWN+vRsekisY\r\n         C9jZKcWBxDGBnMTH7pfdIXtIxva8oRnxYP323IdYEs7DFTWn8iafAgKSveh/xBxblAhs\r\n         ZsLW1e/NpqhSfmaFUoTsuYqnMm9gV2Btbcd9zGgGCeXwcEEW/jJDxOTMkQlwYXCYdYD8\r\n         PQAA==;\r\n        dara=google.com",
+            "arc-authentication-results": "ARC-Authentication-Results: i=1; mx.google.com; arc=none",
+            "return-path": "Return-Path: <thisurakadev@gmail.com>",
+            "received-spf": "Received-SPF: pass (google.com: domain of thisurakadev@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;",
+            "authentication-results": "Authentication-Results: mx.google.com;\r\n       dkim=pass header.i=@gmail.com header.s=20251104 header.b=hl0jehOc;\r\n       arc=pass (i=1);\r\n       spf=pass (google.com: domain of thisurakadev@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=thisurakadev@gmail.com;\r\n       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;\r\n       dara=pass header.i=@gmail.com",
+            "dkim-signature": "DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=gmail.com; s=20251104; t=1781201252; x=1781806052; dara=google.com;\r\n        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject\r\n         :date:message-id:reply-to;\r\n        bh=/XeiKsA9lT/VxYdNVWBQE0oK/w3jOUXEz6SS4XieZPk=;\r\n        b=hl0jehOcquI4ow58dZ5RhuUgo0b+n7rzcB/hLj3HaGO+o0bpz0j3Pw+74zFSqHeVlM\r\n         A7oFlUuP2y4GYKmlhqnFeOAoZbMpUQauaSAPTEOKWcFeJ0f+E1r9b8gFbMkM+Ox90xAs\r\n         4tXDfXLYoPUow1Bv7DAXngWxCfthdW1BzM/poo5f0wELerMNFCQjXYJNaseC/weGAQFT\r\n         LfbFdXAVyEFQ2oJrLvH62k9kf8R6s2kwZjuU/E3UnPZMQ6mAB2T7vXrJcvHKN/PHVVeN\r\n         OXVEXxOOGJYpZySFEB27KA6mg+HKBZYzYs17yA9Q7ccL5YWUJFWFR4zBXBHUTVtwC7WG\r\n         hw8Q==",
+            "x-google-dkim-signature": "X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=1e100.net; s=20251104; t=1781201252; x=1781806052;\r\n        h=to:subject:message-id:date:from:mime-version:x-gm-gg\r\n         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;\r\n        bh=/XeiKsA9lT/VxYdNVWBQE0oK/w3jOUXEz6SS4XieZPk=;\r\n        b=swo+LOvchtNAJaRRNPZBlMX4Yo6GVnRejZ+I/bK+zEhw+//Nfg3SdLhAW6Cr0jiI89\r\n         29/MgLXEWOD1sNlJFLJmtMfuKAk91ynVBTiE3GqaqFAkzBoFH/PF/oPZWsqDvJfJAg00\r\n         wR4E2t5GYZo8xgPm/Ljqnp2szfd/jFmb4xaUdm4qJecLdrTI8vd4lT4uC9ggVCtjbiDw\r\n         zbmC2N4Soa0pDgp/QasFc0hVL4dqDCSVzE3BW8pbVz5d73ErgpBTWh3PpWkThvlQs6qO\r\n         zGq8CjCh9hPsSj7LZS2aZZSRgj6+DSZkYrttw4yil2ad1Aw5hHHC69ZGle/f9ZA6LUcd\r\n         qD6w==",
+            "x-gm-message-state": "X-Gm-Message-State: AOJu0Yz5w9yvqVQFJOme/vdN3KpYw+MJNFxjAVgqQe3cBXIi3qVEPr5B\r\n\tvT38MloP+39FLIMN1de3cVjrrfrJIBKlwEgQ4DjBDakRYEFRTwRNI6JekkPuVJnad4wW+q27wyT\r\n\t5tmmeEjl5JhTjEinYKNlx6ct4cF7rFBQKxB75",
+            "x-gm-gg": "X-Gm-Gg: Acq92OGXmTBNl0MoThbz4HeC9Z4G8sPMtRCCJ/hbFNNYO+hdO6RA1+itnNc0OMm6ac8\r\n\tWs5GKBBD7N3dgtMWCQk1fjSU709CLkVkswHPttKRLtBB37kal98m4sukwhyi82gWT9sa+biHI86\r\n\tctzyI3nRa04M74o4/HllwL8qnAerGTlK3um3FaBtsXvHqtmTYmhFj8YCwO/qCRXLBvFRRIM1lYR\r\n\tcbbyKuipxqXKd/oam8/WBOgIO6KgY5/drkCTvWfX9Y4Wxpec80fJKz2ZzuYZAJdi7nau2I+dqud\r\n\t2C1OYuI=",
+            "mime-version": "MIME-Version: 1.0",
+            "from": "From: Thisuraka Weerasekera <thisurakadev@gmail.com>",
+            "date": "Date: Thu, 11 Jun 2026 23:37:21 +0530",
+            "x-gm-features": "X-Gm-Features: AVVi8CdtEl9yRBIBgStP4KuOhjdRwKUoBYhkhmaR70tFchvGwKtDvpGmCu_emeU",
+            "message-id": "Message-ID: <CACyEFQi7LDJ3Q7u=-DCOytmL_inbUmyVgqYv2cPktbUUkO0-ZQ@mail.gmail.com>",
+            "subject": "Subject: project help needed",
+            "to": "To: \"thisurakaweerasekera@gmail.com\" <thisurakaweerasekera@gmail.com>",
+            "content-type": "Content-Type: multipart/mixed; boundary=\"000000000000dfa6af0653fe3b35\""
+          },
+          "html": "<div dir=\"ltr\">hi<br><br>we need some software built. details in the attachment. its kind of urgent. can you call me?<br><br>thomas<br>+49 176 555 0123<br></div>\n",
+          "text": "hi\n\nwe need some software built. details in the attachment. its kind of urgent.\ncan you call me?\n\nthomas\n+49 176 555 0123\n",
+          "textAsHtml": "<p>hi</p><p>we need some software built. details in the attachment. its kind of urgent.<br/>can you call me?</p><p>thomas<br/>+49 176 555 0123</p>",
+          "subject": "project help needed",
+          "date": "2026-06-11T18:07:21.000Z",
+          "to": {
+            "value": [
+              {
+                "address": "thisurakaweerasekera@gmail.com",
+                "name": ""
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><a href=\"mailto:thisurakaweerasekera@gmail.com\" class=\"mp_address_email\">thisurakaweerasekera@gmail.com</a></span>",
+            "text": "thisurakaweerasekera@gmail.com"
+          },
+          "from": {
+            "value": [
+              {
+                "address": "thisurakadev@gmail.com",
+                "name": "Thisuraka Weerasekera"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Thisuraka Weerasekera</span> &lt;<a href=\"mailto:thisurakadev@gmail.com\" class=\"mp_address_email\">thisurakadev@gmail.com</a>&gt;</span>",
+            "text": "\"Thisuraka Weerasekera\" <thisurakadev@gmail.com>"
+          },
+          "messageId": "<CACyEFQi7LDJ3Q7u=-DCOytmL_inbUmyVgqYv2cPktbUUkO0-ZQ@mail.gmail.com>"
+        },
+        "binary": {
+          "attachment_0": {
+            "mimeType": "application/pdf",
+            "fileType": "pdf",
+            "fileExtension": "pdf",
+            "data": "filesystem-v2",
+            "fileName": "project_notes.pdf",
+            "id": "filesystem-v2:workflows/QTpdj8ILRthKhdSA/executions/temp/binary_data/53b683bb-d7f1-4c88-bfc3-2b571361f0d0",
+            "fileSize": "42 kB",
+            "bytes": 41992
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Convert to HTML": {
+      "main": [
+        [
+          {
+            "node": "Gmail: Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail: Reply": {
+      "main": [
+        []
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Set: inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set: follow_up",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set: spam",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set: unrelated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: inquiry": {
+      "main": [
+        [
+          {
+            "node": "IF: Has Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Has Attachments": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Guardrails: Pre RAG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF": {
+      "main": [
+        [
+          {
+            "node": "Merge Attachment Texts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text": {
+      "main": [
+        [
+          {
+            "node": "Merge Attachment Texts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Guardrails: Pre RAG",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Guardrails: Post RAG",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Guardrails: Post RAG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrails: Pre RAG": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Merge Attachment Texts": {
+      "main": [
+        [
+          {
+            "node": "Guardrails: Pre RAG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack: Send and Wait": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrails: Post RAG": {
+      "main": [
+        [
+          {
+            "node": "Slack: Send",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "Code: Convert to HTML",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Slack: Send": {
+      "main": [
+        [
+          {
+            "node": "Slack: Send and Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "59011502-47d6-40e7-a987-50c4ef4a136a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cc8ab8ef167f079a4b5aac88a5ebc7299220f762da84c9209b04000df0f47a9a"
+  },
+  "nodeGroups": [],
+  "id": "QTpdj8ILRthKhdSA",
+  "tags": []
+}
