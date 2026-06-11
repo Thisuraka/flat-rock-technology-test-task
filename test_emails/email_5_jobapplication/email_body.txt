@@ -1,0 +1,25 @@
+Subject: Application for Senior Full-Stack Developer Position
+
+Dear Hiring Manager,
+
+I am writing to express my interest in joining ABC Company as a Senior Full-Stack Developer. I came across your company profile on LinkedIn and was impressed by your work across healthcare, fintech, and logistics verticals.
+
+I have 6 years of professional experience working with React, Node.js, Python, and AWS — technologies I see are core to your stack. Most recently, I spent 3 years at a mid-sized software consultancy in Bangalore where I led a team of 4 developers delivering e-commerce and SaaS projects for international clients.
+
+Key highlights from my career:
+- Led the frontend rebuild of a B2B marketplace serving 150+ vendors (React, Next.js)
+- Designed and deployed microservices architecture on AWS ECS for a fintech client
+- Mentored 6 junior developers and established code review practices for the team
+- Certified AWS Solutions Architect (Associate)
+
+I've attached my resume for your review. I am particularly drawn to ABC Company's commitment to dedicated named teams and your work on HIPAA-compliant healthcare platforms — that's exactly the kind of technically challenging, high-impact work I want to be doing.
+
+I'm available for an interview at your earliest convenience and can relocate to Colombo or work remotely. My expected salary range is LKR 450,000-550,000 per month, and I can start within 30 days of an offer.
+
+Looking forward to hearing from you.
+
+Best regards,
+Priya Sharma
+priya.sharma.dev@gmail.com
++91 98765 43210
+LinkedIn: linkedin.com/in/priyasharmadev
